@@ -7,6 +7,7 @@ export async function graphqlClient(query, variables = {}) {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.GITLAB_TOKEN}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
