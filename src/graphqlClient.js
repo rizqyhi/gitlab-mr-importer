@@ -1,7 +1,7 @@
 import "dotenv/config";
 import fetch from "node-fetch";
 
-export async function graphqlClient(query, variables = {}) {
+export default async function graphqlClient(query, variables = {}) {
   try {
     const response = await fetch("https://gitlab.com/api/graphql", {
       method: "POST",
