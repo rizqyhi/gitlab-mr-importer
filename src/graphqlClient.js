@@ -17,7 +17,7 @@ export async function graphqlClient(query, variables = {}) {
 
     const responseBody = await response.json();
 
-    if (responseBody.errors[0]) {
+    if (responseBody.errors) {
       throw Error(responseBody.errors[0].message);
     }
 
