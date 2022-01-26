@@ -1,4 +1,4 @@
-import supabase from "./supabase";
+import supabase from "./supabase.js";
 
 export async function insertUser(pid, username) {
   const { data: user, error } = await supabase
@@ -15,22 +15,15 @@ export async function insertUser(pid, username) {
   console.log("[NEW GITLAB USER]", user);
 }
 
-export async function insertReviewer(mrPid, reviewerPid) {
-  const { data: reviewer } = await supabase
-    .from("merge_request_reviewers")
-    .select()
-    .eq("mr_pid", mrPid)
-    .eq("reviewer_pid", reviewerPid)
-    .limit(1)
-    .single();
+export async function insertReviewers(mrPid, reviewers) {
+  await supabase.from("merge_request_reviewers").delete().eq("mr_pid", mrPid);
 
-  if (reviewer) {
-    return;
-  }
-
-  const { error } = await supabase
-    .from("merge_request_reviewers")
-    .insert([{ mr_pid: mrPid, reviewer_pid: reviewerPid }]);
+  const { error } = await supabase.from("merge_request_reviewers").insert(
+    reviewers.map((reviewer) => ({
+      mr_pid: mrPid,
+      reviewer_pid: reviewer.id,
+    }))
+  );
 
   if (error && error.details.includes("already exists")) {
     console.error("[ERROR]", error.message, error.details);
@@ -41,7 +34,7 @@ export async function insertReviewer(mrPid, reviewerPid) {
 }
 
 export async function insertMR(mr) {
-  const { error } = await supabase.from("merge_requests").insert([
+  const { error } = await supabase.from("merge_requests").upsert([
     {
       id: mr.iid,
       pid: mr.id,
@@ -78,8 +71,5 @@ export default async function saveMergeRequest(mr) {
   }
 
   await insertMR(mr);
-
-  for (const reviewer of mr.reviewers) {
-    await insertReviewer(mr.id, reviewer.id);
-  }
+  await insertReviewers(mr.id, mr.reviewers);
 }
