@@ -68,7 +68,7 @@ export async function get(id) {
       }
     }      
     `,
-    { id }
+    { id: id.toString() }
   );
 
   return formatMergeRequest(response.project.mergeRequest);

@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       return res.status(404).send("INVALID_EVENT");
     }
 
-    const mr = await get(req.body.object_attribute.iid);
+    const mr = await get(req.body.object_attributes.iid);
 
     console.log(mr);
     // await saveMergeRequest(mr);
