@@ -1,9 +1,10 @@
+import "dotenv/config";
 import { get } from "../src/mergeRequest.js";
 import saveMergeRequest from "./src/saveMergeRequest.js";
 
 export default async function handler(req, res) {
   try {
-    if (req.headers["X-Gitlab-Token"] !== "SECRET_TOKEN") {
+    if (req.headers["X-Gitlab-Token"] !== process.env.GITLAB_WEBHOOK_SECRET) {
       return res.status(401).send("INVALID_SECRET");
     }
 
