@@ -14,8 +14,7 @@ export default async function handler(req, res) {
 
     const mr = await get(req.body.object_attributes.iid);
 
-    console.log(mr);
-    // await saveMergeRequest(mr);
+    await saveMergeRequest(mr);
 
     return res.status(200).send("OK");
   } catch (e) {
