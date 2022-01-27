@@ -4,7 +4,7 @@ import saveMergeRequest from "../src/saveMergeRequest.js";
 
 export default async function handler(req, res) {
   try {
-    if (req.headers["X-Gitlab-Token"] !== process.env.GITLAB_WEBHOOK_SECRET) {
+    if (req.headers["x-gitlab-token"] !== process.env.GITLAB_WEBHOOK_SECRET) {
       return res.status(401).send("INVALID_SECRET");
     }
 
