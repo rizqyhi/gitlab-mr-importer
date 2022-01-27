@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "import": "node --experimental-vm-modules index.js"
+    "import": "node --experimental-vm-modules index.js",
+    "import:daily": "node --experimental-vm-modules dailyImport.js",
+    "get": "node --experimental-vm-modules getmr.js"
   },
   "author": "Rizqy H.",
   "license": "MIT",
